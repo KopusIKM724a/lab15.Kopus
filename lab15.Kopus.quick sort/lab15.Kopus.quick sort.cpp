@@ -1,9 +1,38 @@
 #include <iostream>
 using namespace std;
 
+void swap(int& a, int& b) {
+    int temp = a;
+    a = b;
+    b = temp;
+}
+
+int partition(int a[], int low, int high) {
+    int pivot = a[high]; 
+    int i = low - 1;    
+
+    for (int j = low; j < high; j++) {
+        if (a[j] <= pivot) {
+            i++;
+            swap(a[i], a[j]);
+        }
+    }
+    swap(a[i + 1], a[high]);
+    return (i + 1);
+}
+
+void quickSort(int a[], int low, int high) {
+    if (low < high) {
+        int pi = partition(a, low, high);
+
+        quickSort(a, low, pi - 1);  
+        quickSort(a, pi + 1, high); 
+    }
+}
+
 int main() {
     const int size = 10;
-    int a[size] = { 2, -2, 4, -1, 0, 12, -11, 9, -8, 7 };
+    int a[size] = { 6, -15, 7, -8, 0, 5, -4, 9, -7, 12 };
     int temp[size];
 
     cout << "Initial array:\n";
@@ -38,19 +67,9 @@ int main() {
     }
     cout << endl;
 
-    for (int i = 0; i < size - 1; i++) {
-        int minIndex = i;
-        for (int j = i + 1; j < size; j++) {
-            if (a[j] < a[minIndex]) {
-                minIndex = j;
-            }
-        }
-        int tempSwap = a[i];
-        a[i] = a[minIndex];
-        a[minIndex] = tempSwap;
-    }
+    quickSort(a, 0, size - 1);
 
-    cout << "\nArray after sorting in ascending order (Selection Sort):\n";
+    cout << "\nArray after sorting in ascending order (Quick Sort):\n";
     for (int i = 0; i < size; i++) {
         cout << a[i] << " ";
     }
